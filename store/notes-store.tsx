@@ -12,7 +12,6 @@ export const NotesContext = createContext({
 	addNote: (title: string, description: string) => {},
 	updateNote: (id: string, title: string, description: string) => {},
 	deleteNote: (id: string) => {},
-	fetchNotesData: () => {},
 });
 
 type Props = {
@@ -102,19 +101,15 @@ function NotesContextProvider({ children }: Props) {
 			console.log(result);
 		});
 
-		const notesInDB = await fetchNotes()
+		const notesInDB = await fetchNotes();
 
 		console.log('notesInDB', notesInDB);
 	}
 
 	function deleteNote(id: string) {
-		notesList.filter((item) => item.id !== id);
+		const newNotesList = notesList.filter((item) => item.id !== id);
+		setNotesList(newNotesList);
 		deleteNoteItem(id);
-	}
-
-	async function fetchNotesData() {
-		const notes = await fetchNotes();
-		setNotesList(notes);
 	}
 
 	const value = {
@@ -122,7 +117,6 @@ function NotesContextProvider({ children }: Props) {
 		addNote: addNote,
 		updateNote: updateNote,
 		deleteNote: deleteNote,
-		fetchNotesData: fetchNotesData,
 	};
 
 	return (
